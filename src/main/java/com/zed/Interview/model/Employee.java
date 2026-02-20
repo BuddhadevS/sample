@@ -21,7 +21,7 @@ public class Employee {
     @Email(message = "* Enter Proper Email")
     private String email;
     private String department;
-    @Min(1)
+    @Min(value = 1, message = "Salary must be greater than 0")
     private long salary;
 
     public Employee(){}

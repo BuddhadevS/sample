@@ -3,6 +3,7 @@ package com.zed.Interview.controller;
 import com.zed.Interview.dto.EmployeeDto;
 import com.zed.Interview.model.Employee;
 import com.zed.Interview.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public Employee saveData(@RequestBody EmployeeDto employeeDto){
+    public Employee saveData(@Valid @RequestBody EmployeeDto employeeDto){
         return employeeService.saveData(employeeDto);
     }
 
