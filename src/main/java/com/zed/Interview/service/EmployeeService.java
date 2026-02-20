@@ -27,8 +27,6 @@ public class EmployeeService {
     }
 
     public List<Employee> finadAllData() {
-
-
         return employeeRepo.findAll();
     }
 
