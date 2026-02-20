@@ -2,8 +2,11 @@ package com.zed.Interview.controller;
 
 import com.zed.Interview.dto.EmployeeDto;
 import com.zed.Interview.model.Employee;
+import com.zed.Interview.resp.ApiResponse;
 import com.zed.Interview.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,25 +14,58 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class EmployeeController {
+
     private final EmployeeService employeeService;
+
     public EmployeeController(EmployeeService employeeService){
         this.employeeService = employeeService;
     }
 
+    // SAVE
     @PostMapping("/employees")
-    public Employee saveData(@Valid @RequestBody EmployeeDto employeeDto){
-        return employeeService.saveData(employeeDto);
+    public ResponseEntity<ApiResponse<Employee>> saveData(@Valid @RequestBody EmployeeDto employeeDto){
+
+        Employee employee = employeeService.saveData(employeeDto);
+
+        ApiResponse<Employee> response = new ApiResponse<>(
+                HttpStatus.CREATED.value(),
+                "Employee created successfully",
+                employee,
+                null
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    // GET ALL
     @GetMapping("/employees")
-    public List<Employee> findAll(){
-        return employeeService.finadAllData();
+    public ResponseEntity<ApiResponse<List<Employee>>> findAll(){
+
+        List<Employee> list = employeeService.finadAllData();
+
+        ApiResponse<List<Employee>> response = new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Employee list fetched successfully",
+                list,
+                null
+        );
+
+        return ResponseEntity.ok(response);
     }
 
+    // GET BY ID
     @GetMapping("/employees/{id}")
-    public Employee getById(@PathVariable Integer id){
-        return employeeService.findById(id);
+    public ResponseEntity<ApiResponse<Employee>> getById(@PathVariable Integer id){
+
+        Employee employee = employeeService.findById(id);
+
+        ApiResponse<Employee> response = new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Employee fetched successfully",
+                employee,
+                null
+        );
+
+        return ResponseEntity.ok(response);
     }
-
-
 }
