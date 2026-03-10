@@ -6,7 +6,6 @@ import com.zed.Interview.exception.InvalidSalaryException;
 import com.zed.Interview.model.Employee;
 import com.zed.Interview.repository.EmployeeRepo;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -42,5 +41,29 @@ public class EmployeeService {
 
     public Employee findById(Integer id) {
         return employeeRepo.findById(id).orElseThrow(()->new RuntimeException("It not found "+id));
+    }
+
+
+
+
+    public Employee updateEmployee(Integer id, EmployeeDto employeeDto) {
+
+        Employee employee = employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id " + id));
+
+        if (employeeDto.getSalary() < 1) {
+            throw new InvalidSalaryException("Salary must be greater than 0");
+        }
+
+        if (employeeDto.getEmail() == null || !employeeDto.getEmail().contains("@")) {
+            throw new InvalidEmailException("Invalid email format");
+        }
+
+        employee.setName(employeeDto.getName());
+        employee.setEmail(employeeDto.getEmail());
+        employee.setDepartment(employeeDto.getDepartment());
+        employee.setSalary(employeeDto.getSalary());
+
+        return employeeRepo.save(employee);
     }
 }

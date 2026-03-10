@@ -21,7 +21,6 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    // SAVE
     @PostMapping("/employees")
     public ResponseEntity<ApiResponse<Employee>> saveData(@Valid @RequestBody EmployeeDto employeeDto){
 
@@ -37,7 +36,6 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // GET ALL
     @GetMapping("/employees")
     public ResponseEntity<ApiResponse<List<Employee>>> findAll(){
 
@@ -52,8 +50,6 @@ public class EmployeeController {
 
         return ResponseEntity.ok(response);
     }
-
-    // GET BY ID
     @GetMapping("/employees/{id}")
     public ResponseEntity<ApiResponse<Employee>> getById(@PathVariable Integer id){
 
@@ -68,4 +64,25 @@ public class EmployeeController {
 
         return ResponseEntity.ok(response);
     }
+
+
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<ApiResponse<Employee>> updateEmployee(
+            @PathVariable Integer id,
+            @Valid @RequestBody EmployeeDto employeeDto) {
+
+        Employee employee = employeeService.updateEmployee(id, employeeDto);
+
+
+        ApiResponse<Employee> response = new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Employee updated successfully",
+                employee,
+                null
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }
