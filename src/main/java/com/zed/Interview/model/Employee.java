@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class Employee {
+public class Employee extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +34,8 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", department='" + department + '\'' +
                 ", salary=" + salary +
+                ", createdAt=" + getCreatedAt() +
+                ", updatedAt=" + getUpdatedAt() +
                 '}';
     }
 
