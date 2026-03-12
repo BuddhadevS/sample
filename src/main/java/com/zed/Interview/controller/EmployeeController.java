@@ -84,5 +84,35 @@ public class EmployeeController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/employees/{id}")
+    public ResponseEntity<ApiResponse<Employee>> patchEmployee(
+            @PathVariable Integer id,
+            @RequestBody EmployeeDto employeeDto) {
+
+        Employee employee = employeeService.patchEmployee(id, employeeDto);
+
+        ApiResponse<Employee> response = new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Employee updated successfully",
+                employee,
+                null
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteEmployee(@PathVariable Integer id) {
+        employeeService.deleteEmployee(id);
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                HttpStatus.OK.value(),
+                "Employee deleted successfully",
+                null,
+                null
+        );
+
+        return ResponseEntity.ok(response);
+    }
 
 }

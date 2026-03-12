@@ -5,7 +5,7 @@ public class EmployeeDto {
     private String name;
     private String email;
     private String department;
-    private long salary;
+    private Long salary;
 
     public String getName() {
         return name;
@@ -31,11 +31,11 @@ public class EmployeeDto {
         this.department = department;
     }
 
-    public long getSalary() {
+    public Long getSalary() {
         return salary;
     }
 
-    public void setSalary(long salary) {
+    public void setSalary(Long salary) {
         this.salary = salary;
     }
 }

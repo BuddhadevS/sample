@@ -18,7 +18,7 @@ public class EmployeeService {
     }
 
     public Employee saveData(EmployeeDto employeeDto) {
-        if (employeeDto.getSalary() < 1) {
+        if (employeeDto.getSalary() == null || employeeDto.getSalary() < 1) {
             throw new InvalidSalaryException("Salary must be greater than 0");
         }
         if (employeeDto.getEmail() == null || !employeeDto.getEmail().contains("@")) {
@@ -51,7 +51,7 @@ public class EmployeeService {
         Employee employee = employeeRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with id " + id));
 
-        if (employeeDto.getSalary() < 1) {
+        if (employeeDto.getSalary() == null || employeeDto.getSalary() < 1) {
             throw new InvalidSalaryException("Salary must be greater than 0");
         }
 
@@ -65,5 +65,37 @@ public class EmployeeService {
         employee.setSalary(employeeDto.getSalary());
 
         return employeeRepo.save(employee);
+    }
+
+    public Employee patchEmployee(Integer id, EmployeeDto employeeDto) {
+        Employee employee = employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id " + id));
+
+        if (employeeDto.getName() != null) {
+            employee.setName(employeeDto.getName());
+        }
+        if (employeeDto.getEmail() != null) {
+            if (!employeeDto.getEmail().contains("@")) {
+                throw new InvalidEmailException("Invalid email format");
+            }
+            employee.setEmail(employeeDto.getEmail());
+        }
+        if (employeeDto.getDepartment() != null) {
+            employee.setDepartment(employeeDto.getDepartment());
+        }
+        if (employeeDto.getSalary() != null) {
+            if (employeeDto.getSalary() < 1) {
+                throw new InvalidSalaryException("Salary must be greater than 0");
+            }
+            employee.setSalary(employeeDto.getSalary());
+        }
+
+        return employeeRepo.save(employee);
+    }
+
+    public void deleteEmployee(Integer id) {
+        Employee employee = employeeRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id " + id));
+        employeeRepo.delete(employee);
     }
 }
